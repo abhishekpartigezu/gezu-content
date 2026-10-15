@@ -1,0 +1,48 @@
+{
+  "permissions": {
+    "deny": [
+      "mcp__Sendcloud",
+      "mcp__Canva",
+      "mcp__Shopify__update-product",
+      "mcp__Shopify__set-inventory",
+      "mcp__Shopify__bulk-update-product-status",
+      "mcp__Shopify__create-product",
+      "mcp__Shopify__create-collection",
+      "mcp__Shopify__update-collection",
+      "mcp__Shopify__add-to-collection",
+      "mcp__Shopify__create-discount",
+      "mcp__Shopify__switch-shop",
+      "mcp__Shopify__import-mock-shop-catalog",
+      "mcp__Ryze_AI__shopify__write",
+      "mcp__Ryze_AI__shopify__edit_content",
+      "mcp__Ryze_AI__shopify__delete",
+      "mcp__Ryze_AI__google_ads__runRawMutate",
+      "mcp__Ryze_AI__google_ads__runRawMutateDelete",
+      "mcp__Ryze_AI__google_ads__applyRecommendation",
+      "mcp__Ryze_AI__google_search_console__deleteSitemap",
+      "mcp__Ryze_AI__google_search_console__submitSitemap",
+      "mcp__Ryze_AI__microsoft_ads__mutate",
+      "mcp__Ryze_AI__microsoft_ads__delete",
+      "mcp__Microsoft_365__outlook_send_mail",
+      "mcp__Microsoft_365__outlook_send_draft",
+      "mcp__Microsoft_365__outlook_forward_mail",
+      "mcp__Microsoft_365__outlook_batch_delete_messages",
+      "mcp__Microsoft_365__outlook_trash_thread",
+      "mcp__Klaviyo__send_campaign",
+      "mcp__Higgsfield__publish_website",
+      "mcp__Higgsfield__deploy_website",
+      "mcp__Higgsfield__tiktok_prepare_publish"
+    ]
+  },
+  "hooks": {
+    "SessionStart": [
+      { "hooks": [ { "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/gezu_guard.py\" session" } ] }
+    ],
+    "PreToolUse": [
+      { "matcher": "mcp__.*", "hooks": [ { "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/gezu_guard.py\" pre" } ] }
+    ],
+    "PostToolUse": [
+      { "matcher": "mcp__Shopify__graphql_mutation", "hooks": [ { "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/gezu_guard.py\" post" } ] }
+    ]
+  }
+}
