@@ -39,6 +39,18 @@ class Guard(unittest.TestCase):
         self.ok({"tool_name": "mcp__Shopify__graphql_query", "tool_input": {"query": "{shop{name}}"}})
         self.ok({"tool_name": "mcp__Ryze_AI__google_search_console__runRawSearchAnalytics", "tool_input": {}})
 
+    def test_uuid_named_connector_tools(self):
+        self.ok({"tool_name": "mcp__6c296c0f-fbbf-46f7-b2d8-82186bb67c0f__graphql_query", "tool_input": {"query": "{shop{name}}"}})
+        self.blocked({"tool_name": "mcp__6c296c0f-fbbf-46f7-b2d8-82186bb67c0f__set-inventory", "tool_input": {}})
+        self.blocked({"tool_name": "mcp__1aa4e762-1355-4968-a613-622ea8d85d6c__outlook_send_mail", "tool_input": {}})
+        self.blocked({"tool_name": "mcp__316ac0fd-9999-4d7d-8700-68becc0e66eb__orders_orders_get_list_orders", "tool_input": {}})
+        q = {"tool_name": "mcp__6c296c0f-fbbf-46f7-b2d8-82186bb67c0f__graphql_mutation",
+             "tool_input": {"query": 'mutation { urlRedirectCreate(urlRedirect:{path:"/a", target:"/b"}){ urlRedirect{id} } }'}}
+        self.blocked(q)
+
+    def test_unknown_connector_blocked(self):
+        self.blocked({"tool_name": "mcp__0000-unknown__anything", "tool_input": {}})
+
     def test_non_mcp_tools_untouched(self):
         self.ok({"tool_name": "Bash", "tool_input": {"command": "ls"}})
 

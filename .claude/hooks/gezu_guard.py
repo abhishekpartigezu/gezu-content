@@ -65,6 +65,30 @@ ALLOW = {
     "Claude_Docs": [r"guide", r"query", r"read"],
 }
 
+# Cloud/routine sessions name connector tools by connector UUID (mcp__<uuid>__tool),
+# interactive sessions by display name (mcp__Shopify__tool). Map both to one name.
+CONNECTOR_IDS = {
+    "6c296c0f-fbbf-46f7-b2d8-82186bb67c0f": "Shopify",
+    "bc2c0355-64f2-427b-a33b-4a01ccecdfa3": "Ryze_AI",
+    "22b28a03-f30f-4928-ac77-9d672c4725f2": "Higgsfield",
+    "1aa4e762-1355-4968-a613-622ea8d85d6c": "Microsoft_365",
+    "6437fcb0-4bc8-471d-94be-fb8e553e360b": "Klaviyo",
+    "51408954-958f-4a22-b779-9c7ea559daf6": "Supermetrics_Marketing_Analytics",
+    "1a59c906-04da-521d-bda7-7f71b9f9e01c": "Claude_Docs",
+    "316ac0fd-9999-4d7d-8700-68becc0e66eb": "Sendcloud",
+    "d275b0bf-74d5-4521-9275-65e1cd0abef3": "Canva",
+    "bf7c680d-5fdc-5ef4-b4a0-abadb619bf0a": "Claude_Code_Remote",
+}
+
+
+def resolve_tool(tool):
+    """'mcp__<server-or-uuid>__<name>' -> (connector_name, tool_name)."""
+    parts = tool.split("__", 2)
+    if len(parts) != 3:
+        return "", ""
+    return CONNECTOR_IDS.get(parts[1], parts[1]), parts[2]
+
+
 # --------------------------------------------------------------- GraphQL helpers
 
 def _strip(text):
@@ -305,8 +329,7 @@ def pre_tool_use(event):
     tinput = event.get("tool_input") or {}
     if not tool.startswith("mcp__"):
         return
-    parts = tool.split("__", 2)
-    server, name = (parts[1], parts[2]) if len(parts) == 3 else ("", "")
+    server, name = resolve_tool(tool)
     patterns = ALLOW.get(server)
     if patterns is None or not any(re.fullmatch(p, name) for p in patterns):
         raise PermissionError("tool %s is not in the GeZu SEO allowlist" % tool)
@@ -327,7 +350,7 @@ def pre_tool_use(event):
 
 def post_tool_use(event):
     """Remember metaobjects this session created so it may release (delete) them later."""
-    if event.get("tool_name") != "mcp__Shopify__graphql_mutation":
+    if resolve_tool(event.get("tool_name", "")) != ("Shopify", "graphql_mutation"):
         return
     resp = json.dumps(event.get("tool_response", ""))
     if "metaobjectCreate" not in resp and "metaobjectCreate" not in json.dumps(event.get("tool_input", "")):

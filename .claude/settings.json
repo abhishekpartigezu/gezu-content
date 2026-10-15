@@ -31,18 +31,72 @@
       "mcp__Klaviyo__send_campaign",
       "mcp__Higgsfield__publish_website",
       "mcp__Higgsfield__deploy_website",
-      "mcp__Higgsfield__tiktok_prepare_publish"
+      "mcp__Higgsfield__tiktok_prepare_publish",
+      "mcp__316ac0fd-9999-4d7d-8700-68becc0e66eb",
+      "mcp__d275b0bf-74d5-4521-9275-65e1cd0abef3",
+      "mcp__6c296c0f-fbbf-46f7-b2d8-82186bb67c0f__update-product",
+      "mcp__6c296c0f-fbbf-46f7-b2d8-82186bb67c0f__set-inventory",
+      "mcp__6c296c0f-fbbf-46f7-b2d8-82186bb67c0f__bulk-update-product-status",
+      "mcp__6c296c0f-fbbf-46f7-b2d8-82186bb67c0f__create-product",
+      "mcp__6c296c0f-fbbf-46f7-b2d8-82186bb67c0f__create-collection",
+      "mcp__6c296c0f-fbbf-46f7-b2d8-82186bb67c0f__update-collection",
+      "mcp__6c296c0f-fbbf-46f7-b2d8-82186bb67c0f__add-to-collection",
+      "mcp__6c296c0f-fbbf-46f7-b2d8-82186bb67c0f__create-discount",
+      "mcp__6c296c0f-fbbf-46f7-b2d8-82186bb67c0f__switch-shop",
+      "mcp__6c296c0f-fbbf-46f7-b2d8-82186bb67c0f__import-mock-shop-catalog",
+      "mcp__bc2c0355-64f2-427b-a33b-4a01ccecdfa3__shopify__write",
+      "mcp__bc2c0355-64f2-427b-a33b-4a01ccecdfa3__shopify__edit_content",
+      "mcp__bc2c0355-64f2-427b-a33b-4a01ccecdfa3__shopify__delete",
+      "mcp__bc2c0355-64f2-427b-a33b-4a01ccecdfa3__google_ads__runRawMutate",
+      "mcp__bc2c0355-64f2-427b-a33b-4a01ccecdfa3__google_ads__runRawMutateDelete",
+      "mcp__bc2c0355-64f2-427b-a33b-4a01ccecdfa3__google_ads__applyRecommendation",
+      "mcp__bc2c0355-64f2-427b-a33b-4a01ccecdfa3__google_search_console__deleteSitemap",
+      "mcp__bc2c0355-64f2-427b-a33b-4a01ccecdfa3__google_search_console__submitSitemap",
+      "mcp__bc2c0355-64f2-427b-a33b-4a01ccecdfa3__microsoft_ads__mutate",
+      "mcp__bc2c0355-64f2-427b-a33b-4a01ccecdfa3__microsoft_ads__delete",
+      "mcp__1aa4e762-1355-4968-a613-622ea8d85d6c__outlook_send_mail",
+      "mcp__1aa4e762-1355-4968-a613-622ea8d85d6c__outlook_send_draft",
+      "mcp__1aa4e762-1355-4968-a613-622ea8d85d6c__outlook_forward_mail",
+      "mcp__1aa4e762-1355-4968-a613-622ea8d85d6c__outlook_batch_delete_messages",
+      "mcp__1aa4e762-1355-4968-a613-622ea8d85d6c__outlook_trash_thread",
+      "mcp__6437fcb0-4bc8-471d-94be-fb8e553e360b__send_campaign",
+      "mcp__22b28a03-f30f-4928-ac77-9d672c4725f2__publish_website",
+      "mcp__22b28a03-f30f-4928-ac77-9d672c4725f2__deploy_website",
+      "mcp__22b28a03-f30f-4928-ac77-9d672c4725f2__tiktok_prepare_publish"
     ]
   },
   "hooks": {
     "SessionStart": [
-      { "hooks": [ { "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/gezu_guard.py\" session" } ] }
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/gezu_guard.py\" session"
+          }
+        ]
+      }
     ],
     "PreToolUse": [
-      { "matcher": "mcp__.*", "hooks": [ { "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/gezu_guard.py\" pre" } ] }
+      {
+        "matcher": "mcp__.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/gezu_guard.py\" pre"
+          }
+        ]
+      }
     ],
     "PostToolUse": [
-      { "matcher": "mcp__Shopify__graphql_mutation", "hooks": [ { "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/gezu_guard.py\" post" } ] }
+      {
+        "matcher": "mcp__.*__graphql_mutation",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/gezu_guard.py\" post"
+          }
+        ]
+      }
     ]
   }
 }
